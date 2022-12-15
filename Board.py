@@ -1,5 +1,3 @@
-import io
-from cairosvg import svg2png
 import pygame
 import chess
 
@@ -15,19 +13,10 @@ class Board:
         self.board_surface = pygame.Surface((self.settings.BOARD_WIDTH, self.settings.BOARD_HEIGHT))
 
         self.board = chess.Board()
-        svg = chess.svg.board(
-            self.board,
-            fill=dict.fromkeys(self.board.attacks(chess.E4), "#cc0000cc"),
-            arrows=[chess.svg.Arrow(chess.E4, chess.F6, color="#0000cccc")],
-            squares=chess.SquareSet(chess.BB_DARK_SQUARES & chess.BB_FILE_B),
-            size=350,
-        )
-        self.img = pygame.image.load(svg2png(bytestring=svg))
 
     def draw_board(self):
         """Draws the board."""
         self.board_surface.fill((0, 0, 0))
-        self.board_surface = pygame.image.load(self.img)
 
     def draw_window(self):
         """Blits the board onto the window and displays the remaining objects."""
