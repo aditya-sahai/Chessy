@@ -13,6 +13,7 @@ class Board:
         self.board_surface = pygame.Surface((self.settings.BOARD_WIDTH, self.settings.BOARD_HEIGHT))
 
         self.board = chess.Board()
+        # print(self.board.piece_map()[63])
 
     def draw_board(self):
         """Draws the board."""
