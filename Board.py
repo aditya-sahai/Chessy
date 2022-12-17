@@ -1,3 +1,4 @@
+import os
 import pygame
 import chess
 
@@ -13,11 +14,29 @@ class Board:
         self.board_surface = pygame.Surface((self.settings.BOARD_WIDTH, self.settings.BOARD_HEIGHT))
 
         self.board = chess.Board()
-        # print(self.board.piece_map()[63])
 
     def draw_board(self):
         """Draws the board."""
         self.board_surface.fill((0, 0, 0))
+        for row in range(8):
+            for col in range(8):
+                box_rect = pygame.Rect(
+                    col * self.settings.BOX_SIZE,
+                    row * self.settings.BOX_SIZE,
+                    self.settings.BOX_SIZE,
+                    self.settings.BOX_SIZE
+                )
+                pygame.draw.rect(self.board_surface, self.settings.BOX_COLOUR[(row + col) % 2 == 0], box_rect)
+                # observed that sum of row and col at all white boxes is even and odd at black
+
+                square = chess.square(col, 7 - row)
+                # subtracted from 7 because numbering of rows in chess starts from the bottom
+                piece = self.board.piece_map().get(square)
+                if piece:
+                    piece_colour = self.settings.PIECE_COLOUR[piece.color]
+                    piece_name = chess.piece_name(piece.piece_type)
+                    piece_img = self.settings.PIECE_IMGS[piece_colour][piece_name]
+                    self.board_surface.blit(piece_img, (box_rect.x, box_rect.y))
 
     def draw_window(self):
         """Blits the board onto the window and displays the remaining objects."""
